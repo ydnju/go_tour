@@ -1,0 +1,1 @@
+Run `protoc --go_out=plugins=grpc:. ./proto/*.proto` everytime you update your proto
