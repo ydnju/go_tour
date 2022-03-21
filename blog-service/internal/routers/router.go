@@ -27,7 +27,11 @@ func NewRouter() *gin.Engine {
 	r.POST("/upload/file", upload.UploadFile)
 	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
 
-	apiv1 := r.Group("/api/v1")
+	// handling Token acquisition
+	r.POST("/auth", v1.GetAuth)
+
+	// Only APIs from /api/v1 needs a JWT token for authorization
+	apiv1 := r.Group("/api/v1").Use(middleware.JWT())
 	{
 		apiv1.POST("/tags", tag.Create)
 		apiv1.DELETE("/tags/:id", tag.Delete)
